@@ -3,19 +3,19 @@ import { formatReplayTime } from "~/utils/formatReplayTime";
 
 type LeaderboardEntryProps = {
 	time: number;
-	author_id: string;
+	author: string;
 	input_id: string;
 };
 
 export function LeaderboardEntry({
 	time,
-	author_id,
+	author,
 	input_id,
 }: LeaderboardEntryProps) {
 	return (
 		<div>
-			<span>{formatReplayTime(time)}</span>{" "}
-			<Link to={`/inputs/${input_id}`}>{author_id}</Link>
+			<span className="tabular-nums">{formatReplayTime(time)}</span>{" "}
+			<Link to={`/inputs/${input_id}`}>{author}</Link>
 		</div>
 	);
 }

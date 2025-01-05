@@ -13,9 +13,10 @@ export const inputs = sqliteTable("inputs", {
 	author_id: text()
 		.notNull()
 		.references(() => authors.id),
+	description: text(),
 });
 
 export const authors = sqliteTable("authors", {
 	id: text().$defaultFn(randomUUID).primaryKey(),
-	username: text().notNull(),
+	username: text().notNull().unique(),
 });

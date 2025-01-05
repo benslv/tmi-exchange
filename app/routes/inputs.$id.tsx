@@ -44,27 +44,36 @@ export default function Page() {
 					<p>{dateFormatter.format(inputs.uploaded_at)}</p>
 				</div>
 			</div>
-			<button
-				onClick={() => {
-					navigator.clipboard.writeText(inputs.data);
-				}}
-			>
-				Copy
-			</button>
-			<Link
-				to="./download"
-				reloadDocument
-				download={`${formatReplayTime(inputs.time)}-${
-					author.username
-				}.txt`}
-			>
-				Download
-			</Link>
-			<div className="bg-white">
-				{inputs.data.split("\\n").map((line, i) => (
-					<p key={i}>{line}</p>
-				))}
+			{inputs.description ? (
+				<div className="bg-white rounded-md border border-gray-100 p-2">
+					{inputs.description}
+				</div>
+			) : null}
+			<div className="flex gap-x-2">
+				<button
+					className="bg-blue-500 hover:bg-blue-600 inline-block px-3 py-1 rounded-md text-sm text-white"
+					onClick={() => {
+						navigator.clipboard.writeText(
+							inputs.data.split("\\n").join("\n")
+						);
+					}}
+				>
+					Copy
+				</button>
+				<Link
+					className="bg-blue-100 text-blue-900 hover:bg-blue-200 inline-block px-3 py-1 rounded-md text-sm"
+					to="./download"
+					reloadDocument
+					download={`${formatReplayTime(inputs.time)}-${
+						author.username
+					}.txt`}
+				>
+					Download
+				</Link>
 			</div>
+			<pre className="bg-white p-2 rounded-md border border-gray-100 font-sans">
+				{inputs.data.split("\\n").join("\n")}
+			</pre>
 		</div>
 	);
 }

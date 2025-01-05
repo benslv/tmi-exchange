@@ -4,7 +4,7 @@ import { eq } from "drizzle-orm";
 import assert from "node:assert";
 import { LeaderboardEntry } from "~/components/LeaderboardEntry";
 import db from "~/db.server";
-import { inputs } from "~/db.server/schema";
+import { authors, inputs } from "~/db.server/schema";
 import { getTrackInfo } from "~/models/getTrackInfo";
 import { formatReplayTime } from "~/utils/formatReplayTime";
 
@@ -20,7 +20,11 @@ export async function loader({ params }: LoaderFunctionArgs) {
 	const entries = await db
 		.select()
 		.from(inputs)
-		.where(eq(inputs.track_id, params.id));
+		.where(eq(inputs.track_id, params.id))
+		.orderBy(inputs.time)
+		.innerJoin(authors, eq(inputs.author_id, authors.id));
+
+	console.log(entries);
 
 	return { trackInfo: results[0], entries };
 }
@@ -53,12 +57,12 @@ export default function Page() {
 						one?
 					</p>
 				) : (
-					entries.map(({ author_id, time, id }) => (
+					entries.map(({ inputs, authors }) => (
 						<LeaderboardEntry
-							key={id}
-							author_id={author_id}
-							time={time}
-							input_id={id}
+							key={inputs.id}
+							author={authors.username}
+							time={inputs.time}
+							input_id={inputs.id}
 						/>
 					))
 				)}
