@@ -6,7 +6,9 @@ export const inputs = sqliteTable("inputs", {
 	time: integer().notNull(),
 	award_count: integer().notNull(),
 	data: text().notNull(),
-	uploaded_at: integer({ mode: "timestamp_ms" }),
+	uploaded_at: integer({ mode: "timestamp_ms" })
+		.notNull()
+		.$defaultFn(() => new Date()),
 	track_id: text().notNull(),
 	author_id: text()
 		.notNull()
